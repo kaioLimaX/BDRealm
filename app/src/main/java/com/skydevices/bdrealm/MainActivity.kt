@@ -1,8 +1,10 @@
 package com.skydevices.bdrealm
 
+import android.R
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import com.skydevices.bdrealm.database.DatabaseRealm
 import com.skydevices.bdrealm.databinding.ActivityMainBinding
 import com.skydevices.bdrealm.model.Usuario
@@ -54,7 +56,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun atualizar() {
         val nomeRecuperado = binding.edtNome.text.toString()
-        val _idSelecionado : ObjectId = ObjectId.Companion.from("64c1e22e99c8be4763274931")
+        val item = binding.spinner.selectedItem.toString()
+        val _idSelecionado : ObjectId = ObjectId.Companion.from(item)
 
         val usuario = Usuario().apply {
             _id = _idSelecionado
@@ -74,6 +77,15 @@ class MainActivity : AppCompatActivity() {
             Log.i("info_realm", " id : ${usuario._id} - ${usuario.nome} - idade ${usuario.idade}")
 
         }
+        val adapter = ArrayAdapter(
+            this,
+            R.layout.simple_spinner_item,
+            lista.map { produto -> "${produto._id}" })
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+
+        // Aplicar o adapter ao Spinner
+        binding.spinner.adapter = adapter
+
         binding.txtResultado.text = textoLista
 
     }
